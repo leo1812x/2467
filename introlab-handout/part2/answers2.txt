@@ -1,0 +1,7 @@
+the first difference is that the #include <stdio.h> became a lot of strings that seem to import every folder that composes stdio.H
+
+hello.i is also importing many types and structs
+
+it also writes "extern" functions 
+
+i also notice that the defined RETURNVALUE 67 became just 67 
