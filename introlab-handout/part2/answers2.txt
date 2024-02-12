@@ -5,8 +5,3 @@ hello.i is also importing many types and structs
 it also writes "extern" functions 
 
 i also notice that the defined RETURNVALUE 67 became just 67 
-
-ld -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o hello a.out \
-/usr/lib/x86_64-linux-gnu/crt1.o /usr/lib/x86_64-linux-gnu/crti.o \
-/usr/lib/x86_64-linux-gnu/crtn.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbegin.o \
-/usr/lib/gcc/x86_64-linux-gnu/7/crtend.o -lc
