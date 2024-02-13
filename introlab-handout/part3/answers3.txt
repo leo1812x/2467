@@ -1,0 +1,5 @@
+the difference on execution times between both programs is due to how computer memory is organized.
+
+Cache memory is stored "spatially" so our program will be faster or slower deppending on the proximity of the memory location
+
+so copyij is faster because of efficient cache memory access
