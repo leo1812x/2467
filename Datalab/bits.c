@@ -222,6 +222,7 @@ int minusOne(void) {
 int tmax(void) {
   int result = 1 << 31;
   result = result + ~0;
+  return result;
 }
 /* 
  * negate - return -x 
