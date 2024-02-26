@@ -3,7 +3,7 @@
  * UNO CSCI 2467 / Fall 2019
  * 
  **********
- * STEP 0 * <Please put your name and UNO email address here>
+ * STEP 0 * <leonardo lopez llopez4@uno.edu>
  **********
  *
  * bits.c - Source file with your solutions to the Lab.
@@ -171,7 +171,8 @@ int copyLSB(int x) {
  *   Rating: 2
  */
 int specialBits(void) {
-    return 2;
+  int result = 0xffca3fff;
+  return result;
 }
 /* 
  * conditional - same as x ? y : z 
@@ -181,7 +182,8 @@ int specialBits(void) {
  *   Rating: 4
  */
 int conditional(int x, int y, int z) {
-  return 2;
+  int result = ((~x + 1) & y) | ((~(~x + 1)) & z);
+  return result;
 }
 /*
  * bitParity - returns 1 if x contains an odd number of 0's
@@ -191,7 +193,13 @@ int conditional(int x, int y, int z) {
  *   Rating: 4
  */
 int bitParity(int x) {
-  return 2;
+  int result = x ^ (x >> 16);
+  result = result ^ (result >> 8);
+  result = result ^ (result >> 4);
+  result = result ^ (result >> 2);
+  result = result ^ (result >> 1);
+  result = result & 1;
+  return result;
 }
 /*******************************************
  * INTEGERS (8 puzzles, 22 points total)   *
@@ -203,7 +211,7 @@ int bitParity(int x) {
  *   Rating: 1
  */
 int minusOne(void) {
-  return 2;
+  return ~0;
 }
 /* 
  * TMax - return maximum two's complement integer 
@@ -212,7 +220,8 @@ int minusOne(void) {
  *   Rating: 1
  */
 int tmax(void) {
-  return 2;
+  int result = 1 << 31;
+  result = result + ~0;
 }
 /* 
  * negate - return -x 
@@ -222,7 +231,8 @@ int tmax(void) {
  *   Rating: 2
  */
 int negate(int x) {
-  return 2;
+  int result = ~x + 1;
+  return result;
 }
 /* 
  * isNegative - return 1 if x < 0, return 0 otherwise 
@@ -232,7 +242,8 @@ int negate(int x) {
  *   Rating: 2
  */
 int isNegative(int x) {
-  return 2;
+  int result = (x >> 31) & 1;
+  return result;
 }
 /* 
  * isPositive - return 1 if x > 0, return 0 otherwise 
@@ -242,7 +253,8 @@ int isNegative(int x) {
  *   Rating: 4
  */
 int isPositive(int x) {
-  return 2;
+  int result = !((x >> 31) | !x);
+  return result;
 }
 /* 
  * bang - Compute !x without using !
@@ -252,7 +264,8 @@ int isPositive(int x) {
  *   Rating: 4 
  */
 int bang(int x) {
-  return 2;
+  int result = ((x | (~x + 1)) >> 31) + 1;
+  return result;
 }
 /* 
  * addOK - Determine if can compute x+y without overflow
@@ -263,7 +276,8 @@ int bang(int x) {
  *   Rating: 4
  */
 int addOK(int x, int y) {
-  return 2;
+  int result = !(((x >> 31) ^ (y >> 31)) & ((x >> 31) ^ ((x + y) >> 31)));
+  return result;
 }
 /* 
  * absVal - absolute value of x
@@ -274,7 +288,8 @@ int addOK(int x, int y) {
  *   Rating: 4
  */
 int absVal(int x) {
-  return 2;
+  int result = (x ^ (x >> 31)) + (~(x >> 31) + 1);
+  return result;
 }
 /*************************************************************
  * BONUS puzzles BELOW! be advised, some are quite difficult *
@@ -292,7 +307,7 @@ int absVal(int x) {
  *  Rating: 3
  */
 int byteSwap(int x, int n, int m) {
-    return 2;
+  
 }
 /*
  * bitCount - returns count of number of 1's in word
