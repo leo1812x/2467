@@ -307,7 +307,7 @@ int absVal(int x) {
  *  Rating: 3
  */
 int byteSwap(int x, int n, int m) {
-  
+  return 2;
 }
 /*
  * bitCount - returns count of number of 1's in word
