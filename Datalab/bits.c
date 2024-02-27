@@ -172,10 +172,7 @@ int copyLSB(int x) {
  */
 int specialBits(void) {;
   int result = 0xff;
-  result = (result << 8) + 0xca;
-  result = (result << 8) + 0x3f;
-  result = (result << 8) + 0xff;
-  return result;
+  return (result << 24) | 0xca3fff;
 }
 /* 
  * conditional - same as x ? y : z 
