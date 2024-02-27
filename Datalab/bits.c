@@ -157,6 +157,9 @@ int bitXor(int x, int y) {
  *   Rating: 2
  */
 int isNotEqual(int x, int y) {
+  // XOR operation naturally differentiates bits
+  // If x and y are different, XOR results in a non-zero value, which when (!!), returns 1
+  // If x and y are the same, XOR results in 0, which remains 0 after double negation
   int result = !!(x ^ y);
   return result;
 }
@@ -168,6 +171,8 @@ int isNotEqual(int x, int y) {
  *   Rating: 2
  */
 int copyLSB(int x) {
+  // shift the least significant bit (LSB) of x to the most significant bit position
+  // arithmetic right shift back to the LSB position, filling all bits with the original LSB
   int result = (x << 31) >> 31;
   return result;
 }
@@ -187,10 +192,11 @@ int specialBits(void) {
  *   Rating: 4
  */
 int conditional(int x, int y, int z) {
-  int mask = !!x;
-  mask = ~(mask + ~0);
-    return (mask & y) | (~mask & z);
-
+  // use the mask to select between y and z
+  int mask = !!x; // Normalize x to boolean
+  mask = ~(mask + ~0); // Convert boolean to all-0s or all-1s mask
+  // Use mask to select y if true, z if false
+  return (mask & y) | (~mask & z);
 }
 /*
  * bitParity - returns 1 if x contains an odd number of 0's
@@ -218,6 +224,7 @@ int bitParity(int x) {
  *   Rating: 1
  */
 int minusOne(void) {
+  // The NOT operation on 0 returns all 1s in binary (-1)
   return ~0;
 }
 /* 
@@ -227,8 +234,9 @@ int minusOne(void) {
  *   Rating: 1
  */
 int tmax(void) {
+  // Shifting 1 to the leftmost position and then subtracting 1 results in the maximum positive two's complement integer
   int result = 1 << 31;
-  result = ~result;
+  result = ~result; // Invert bits to get 0x7FFFFFFF
   return result;
 }
 /* 
@@ -239,6 +247,7 @@ int tmax(void) {
  *   Rating: 2
  */
 int negate(int x) {
+  // In two's complement, negation is achieved by inverting all bits and adding 1
   return ~x + 1;
 }
 /* 
@@ -249,6 +258,8 @@ int negate(int x) {
  *   Rating: 2
  */
 int isNegative(int x) {
+  // Right shift by 31 positions to bring the sign bit to the least significant bit position
+  // AND with 1 to get the sign bit's value
   return (x >> 31) & 1;
 }
 /* 
@@ -259,6 +270,8 @@ int isNegative(int x) {
  *   Rating: 4
  */
 int isPositive(int x) {
+  // Check if x is not negative and not zero
+  // Right shift by 31 and OR with !x checks for non-positivity; invert the result
   return !((x >> 31) | !x);
 }
 /* 
@@ -269,6 +282,8 @@ int isPositive(int x) {
  *   Rating: 4 
  */
 int bang(int x) {
+  // OR x with its negation. If x is non-zero, the result is negative; otherwise, it's zero
+  // Right shift by 31 to propagate the sign bit, and add 1 to invert the result
   return ((x | (~x + 1)) >> 31) + 1;
 }
 /* 
@@ -280,13 +295,9 @@ int bang(int x) {
  *   Rating: 4
  */
 int addOK(int x, int y) {
-    int sum = x + y;
-    
-    int x_y_diff_sign = (x ^ y) >> 31;
-    
-    int sum_diff_x_sign = (x ^ sum) >> 31;
-    
-    return !(~x_y_diff_sign & sum_diff_x_sign);
+  // Check if the signs of x and y are different OR the sign of their sum matches x's
+  // XOR to compare signs, right shift to isolate the overflow bit, AND with 1, and NOT the result
+  return !(((x ^ y) & (x ^ (x + y)) >> 31) & 1);
 }
 /* 
  * absVal - absolute value of x
@@ -297,6 +308,8 @@ int addOK(int x, int y) {
  *   Rating: 4
  */
 int absVal(int x) {
+  // Create mask by shifting x right by 31 (0xFFFFFFFF for negative, 0x0 for non-negative)
+  // XOR with mask inverts bits if x is negative; adding inverted mask + 1 adjusts for negation
   return (x ^ (x >> 31)) + (~(x >> 31) + 1);
 }
 /*************************************************************
