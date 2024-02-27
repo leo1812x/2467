@@ -202,19 +202,7 @@ int copyLSB(int x) {
  * Difficulty Rating: 2
  */
 int specialBits(void) {
-    // Construct the desired pattern using operations and shifts
-    // Utilize the allowed range of constants and bitwise operations to form the pattern
-    // The goal is to form 0xffca3fff indirectly, adhering to the constraints
-
-    // Start with 0xFF, the highest allowed constant, for the high part
-    int high = 0xFF << 24; // Shift 0xFF to the leftmost byte
-    // Create the middle and lower part, 0xCA3F, from allowed constants and shift into position
-    // Then, invert it to get the necessary zeros in the pattern
-    // Finally, combine these parts with bitwise OR to get the complete pattern
-    int middleLower = (~(0xD7 << 14)) & ((0xFF << 16) | (0xFF << 8) | 0xFF); // Aim for a combination that negates to required parts
-    
-    return high | middleLower; // Combine to get the final pattern
-}
+  return ~(0xD7 << 14);}
 
 
 /*
