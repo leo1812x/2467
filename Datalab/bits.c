@@ -165,13 +165,16 @@ int copyLSB(int x) {
   return result;
 }
 /* 
- * specialBits - return bit pattern 0xffca3fff
+ * specialBits - return bit pattern 0x ff ca 3f ff
  *   Legal ops: ! ~ & ^ | + << >>
  *   Max ops: 6
  *   Rating: 2
  */
-int specialBits(void) {
-  int result = 0xffca3fff;
+int specialBits(void) {;
+  int result = 0xff;
+  result = (result << 8) + 0xca;
+  result = (result << 8) + 0x3f;
+  result = (result << 8) + 0xff;
   return result;
 }
 /* 
@@ -182,8 +185,12 @@ int specialBits(void) {
  *   Rating: 4
  */
 int conditional(int x, int y, int z) {
-  int result = ((~x + 1) & y) | ((~(~x + 1)) & z);
-  return result;
+  // Step 1: Normalize x to 0 (false) or 1 (true)
+  int mask = !!x;
+  // Step 2: Convert mask to 0x0 (for false) or 0xFFFFFFFF (for true)
+  mask = ~(mask + ~0);
+  // Step 3: Select y if mask is 0xFFFFFFFF, else select z
+  return (mask & y) | (~mask & z);
 }
 /*
  * bitParity - returns 1 if x contains an odd number of 0's
@@ -277,7 +284,7 @@ int bang(int x) {
  *   Rating: 4
  */
 int addOK(int x, int y) {
-  int result = !(((x >> 31) ^ (y >> 31)) & ((x >> 31) ^ ((x + y) >> 31)));
+  int result = !(((x ^ y) & (x ^ (x + y)) >> 31) & 1);
   return result;
 }
 /* 
