@@ -273,7 +273,13 @@ int bang(int x) {
  *   Rating: 4
  */
 int addOK(int x, int y) {
-  return !(((x ^ y) & (x ^ (x + y)) >> 31) & 1);
+    int sum = x + y;
+    
+    int x_y_diff_sign = (x ^ y) >> 31;
+    
+    int sum_diff_x_sign = (x ^ sum) >> 31;
+    
+    return !(~x_y_diff_sign & sum_diff_x_sign);
 }
 /* 
  * absVal - absolute value of x
