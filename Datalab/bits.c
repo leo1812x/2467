@@ -116,6 +116,8 @@ REMINDER: Use the ./btest program to check your functions
  *   Rating: 1
  */
 int bitOr(int x, int y) {
+    // principle used here is DeMorgan's Law, which states that NOT (A AND B) is the same as (NOT X) or (NOT Y)
+
   int result = ~((~x) & (~y));
   return result;}
 /* 
@@ -126,6 +128,8 @@ int bitOr(int x, int y) {
  *   Rating: 1
  */
 int bitAnd(int x, int y) {
+    // by not-ing both inputs, OR-ing them together, and then NOT-ing the result, we simulate the AND operation
+
   int result = ~((~x) | (~y));
   return result;
 }
@@ -137,8 +141,11 @@ int bitAnd(int x, int y) {
  *   Rating: 2
  */
 int bitXor(int x, int y) {
-  int step1 = ~x & y; 
-  int step2 = x & ~y; 
+  // XOR operation can be simulated by identifying bits that are set in one number but not the other
+  int step1 = ~x & y; // Bits set in y not in x
+  int step2 = x & ~y; // Bits set in x not in y
+  // By NOT-ing both results and AND-ing them, followed by NOT-ing the result
+  // we simulate the XOR operation
   int result = ~((~step1) & (~step2));
   return result;
 }
