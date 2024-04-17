@@ -313,31 +313,32 @@ Disassembly of section .text:
     1443:	eb f4                	jmp    1439 <phase_1+0x14>
 
 0000000000001445 <phase_2>:
-    1445:	55                   	push   %rbp
-    1446:	53                   	push   %rbx
-    1447:	48 83 ec 28          	sub    $0x28,%rsp
-    144b:	48 89 e6             	mov    %rsp,%rsi
-    144e:	e8 f4 06 00 00       	callq  1b47 <read_six_numbers>
-    1453:	83 3c 24 01          	cmpl   $0x1,(%rsp)
-    1457:	75 0a                	jne    1463 <phase_2+0x1e>
-    1459:	48 89 e3             	mov    %rsp,%rbx
-    145c:	48 8d 6c 24 14       	lea    0x14(%rsp),%rbp
-    1461:	eb 10                	jmp    1473 <phase_2+0x2e>
-    1463:	e8 a3 06 00 00       	callq  1b0b <explode_bomb>
-    1468:	eb ef                	jmp    1459 <phase_2+0x14>
-    146a:	48 83 c3 04          	add    $0x4,%rbx
-    146e:	48 39 eb             	cmp    %rbp,%rbx
-    1471:	74 10                	je     1483 <phase_2+0x3e>
-    1473:	8b 03                	mov    (%rbx),%eax
-    1475:	01 c0                	add    %eax,%eax
-    1477:	39 43 04             	cmp    %eax,0x4(%rbx)
-    147a:	74 ee                	je     146a <phase_2+0x25>
-    147c:	e8 8a 06 00 00       	callq  1b0b <explode_bomb>
-    1481:	eb e7                	jmp    146a <phase_2+0x25>
-    1483:	48 83 c4 28          	add    $0x28,%rsp
-    1487:	5b                   	pop    %rbx
-    1488:	5d                   	pop    %rbp
-    1489:	c3                   	retq   
+    1445:	55                   	push   %rbp                     ; Save base pointer on the stack
+    1446:	53                   	push   %rbx                     ; Save base register on the stack
+    1447:	48 83 ec 28          	sub    $0x28,%rsp               ; Allocate 40 bytes on the stack for local variables
+    144b:	48 89 e6             	mov    %rsp,%rsi                ; Move stack pointer to %rsi for read_six_numbers argument
+    144e:	e8 f4 06 00 00       	callq  1b47 <read_six_numbers>  ; Call read_six_numbers function
+    1453:	83 3c 24 01          	cmpl   $0x1,(%rsp)              ; Compare first number in array (on the stack) to 1
+    1457:	75 0a                	jne    1463 <phase_2+0x1e>      ; If not equal, jump to explode_bomb call
+    1459:	48 89 e3             	mov    %rsp,%rbx                ; Move stack pointer to %rbx for loop
+    145c:	48 8d 6c 24 14       	lea    0x14(%rsp),%rbp          ; Set %rbp to point to the end of the array (for loop end condition)
+    1461:	eb 10                	jmp    1473 <phase_2+0x2e>      ; Jump into the loop
+    1463:	e8 a3 06 00 00       	callq  1b0b <explode_bomb>      ; Call explode_bomb function
+    1468:	eb ef                	jmp    1459 <phase_2+0x14>      ; Unreachable jump (due to call above), for safety
+    146a:	48 83 c3 04          	add    $0x4,%rbx                ; Move to the next number in the array
+    146e:	48 39 eb             	cmp    %rbp,%rbx                ; Compare current position with end of array
+    1471:	74 10                	je     1483 <phase_2+0x3e>      ; If at the end, exit the loop
+    1473:	8b 03                	mov    (%rbx),%eax              ; Move current number to %eax
+    1475:	01 c0                	add    %eax,%eax                ; Double the number in %eax
+    1477:	39 43 04             	cmp    %eax,0x4(%rbx)           ; Compare doubled number with next number in array
+    147a:	74 ee                	je     146a <phase_2+0x25>      ; If equal, continue loop
+    147c:	e8 8a 06 00 00       	callq  1b0b <explode_bomb>      ; If not equal, call explode_bomb
+    1481:	eb e7                	jmp    146a <phase_2+0x25>      ; Jump back to the next iteration of the loop
+    1483:	48 83 c4 28          	add    $0x28,%rsp               ; Deallocate local variables from the stack
+    1487:	5b                   	pop    %rbx                     ; Restore %rbx from the stack
+    1488:	5d                   	pop    %rbp                     ; Restore %rbp from the stack
+    1489:	c3                   	retq                            ; Return from the function
+
 
 000000000000148a <phase_3>:
     148a:	48 83 ec 18          	sub    $0x18,%rsp
